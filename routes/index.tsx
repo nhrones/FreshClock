@@ -64,6 +64,7 @@ export default function Home() {
           />
         </div>
       </div>
+      <a href='https://github.com/nhrones/FreshClock'>see the code </a>
     </>
   );
 }
