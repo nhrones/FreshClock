@@ -28,21 +28,22 @@ let currentX = 0
 let currentY = 0
 
 /*
- This module creates a graphic display of a digital(numeric)
- clock face.
- The face shows pairs of two, 7-segment 'LED' numeric displays for;
- hour, minute, and seconds values, each separated by a 'colon' character.
- The segments are drawn as 4 x 7 matrix of dots(circles) that immitate
- common 7-segment 'LED' numeric displays.
+ This module creates a graphic display of a digital(numeric) clock face.
+ The face shows pairs of 7-segment 'LED' numeric displays for:
+  - hour
+  - minute and 
+  _ seconds values separated by a 'colon' character.
+  
+ The segments are drawn as a 4 x 7 matrix of dots 
+ These dots immitate common 7-segment 'LED' numeric displays.
  
- This clock face is animated to 'explode' numbers as they change.
- Any segment(dot) that is active when a number value changes, and is not
- required to display the new value, is animated with velocity away
- from its original spot in the number.
+ The clock face is animated to 'explode' numbers as they change.
+ Any dot that is not required to display the new value, is 
+ animated with velocity away from its original position.
  
- These 'free' dots become animated, will collide with each other,
- bounce off walls, and eventually fall out of view if they roll on
- the floor off either end.
+ These animated 'free' dots will collide with each other,
+ bounce off walls, and eventually fall out of view if they 
+ roll off either end of the floor.
  */
 
 /** trails represents the com-trail value */
