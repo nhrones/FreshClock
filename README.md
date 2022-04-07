@@ -1,6 +1,8 @@
 # Fresh Clock
 
-I built this as a POC for a `Fresh` animated canvas island component.
+I built this as a POC for a `Fresh` animated canvas island component. 
+   
+ * Try Fresh the next-gen web framework! https://github.com/lucacasonato/fresh
 
 The code in the 'app' folder is heavily commented.    
 I built this as a learning exercise for a grandson who was taking computer science at UGA.    
