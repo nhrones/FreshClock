@@ -1,15 +1,13 @@
 import { renderDot, activateDot } from './dotPool.ts'
 import { DOT_WIDTH, DOT_HEIGHT } from './clockFace.ts'
 
-/**
- * This module creates an array of physical locations
- * that will be used as a 4 x 7 dot matrix.
- * This array will be manipulted to represent a
- * seven segment numeric display.
- * Each dot position will be active or inactive
- * based on a set of numeric 'masks' that represent
- * the numbers 0 to 9
- */
+/** This module creates an array of physical locations
+    that will be used as a 4 x 7 dot matrix.
+    This array will be manipulted to represent a
+    seven segment numeric display.
+    Each dot position will be active or inactive
+    based on a set of numeric 'masks' that represent
+    the numbers 0 to 9 */
 export interface ClockNumber {
     x: number
     y: number
@@ -21,22 +19,18 @@ export const MatrixHeight = 7;
 
 let dot = { x: 0, y: 0 }
 
-/**
- * Create a new ClockNumber object and
- * initialize its dot array based on the
- * passed in location parameters.
- */
+/** Create a new ClockNumber object and
+    initialize its dot array based on the
+    passed in location parameters. */
 export function createNumber(x: number, y: number): ClockNumber {
 
     // set location for this display
     const left = x
     const top = y
 
-    /**
-     * A 2 dimensional array of points
-     * as a 4 x 7 matrix, that contains a mask
-     * of values 0 or 1 to indicate active pixels
-     */
+    /** A 2 dimensional array of points
+        as a 4 x 7 matrix, that contains a mask
+        of values 0 or 1 to indicate active pixels */
     let currentPixelMask: number[][]
 
     /** A 2 dimensional array of point locations(dots) as a 4 x 7 matrix */
@@ -58,19 +52,16 @@ export function createNumber(x: number, y: number): ClockNumber {
         }
     }
 
-    /**
-     * Draw the visual pixels(dots) for a given number,
-     * based on a lookup in an array of pixel masks.
-     * SEE: the PIXELS array below.
-     * If a value in the mask is set to 1, that position in
-     * the display will have a visual dot displayed.
-     * .
-     * .
-     * On a number change, any active dot that is not required
-     * to be active in the new number, will be set free ...
-     * That is, it will be 'activated' in the DotPool, becoming
-     * an animated dot.
-     */
+    /*  Draw the visual pixels(dots) for a given number,
+        based on a lookup in an array of pixel masks.
+        SEE: the PIXELS array below.
+        If a value in the mask is set to 1, that position in
+        the display will have a visual dot displayed.
+   
+        On a number change, any active dot that is not required
+        to be active in the new number, will be set free ...
+        That is, it will be 'activated' in the DotPool, becoming
+        an animated dot. */
     return {
         x: left, 
         y: top, 
@@ -99,15 +90,13 @@ export function createNumber(x: number, y: number): ClockNumber {
     }
 }
 
-/**
- * A lookup array of 10 pixel masks(0-9).
- * Each mask(array) represents the pixels of
- * a 4 x 7 matrix of dots that are used to
- * display a 7 segment numeric display.
- * If a value in the mask is set to 1, that position
- * in this display will have a visual dot displayed.
- * A value of 0 will not be displayed.
- */
+/** A lookup array of 10 pixel masks(0-9).
+    Each mask(array) represents the pixels of
+    a 4 x 7 matrix of dots that are used to
+    display a 7 segment numeric display.
+    If a value in the mask is set to 1, that position
+    in this display will have a visual dot displayed.
+    A value of 0 will not be displayed. */
 export const PIXELS = [
     // 'zero'
     [

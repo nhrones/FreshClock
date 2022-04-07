@@ -27,35 +27,33 @@ let currentX = 0
 /** the current vertical location to render to */
 let currentY = 0
 
-/*
- This module creates a graphic display of a digital(numeric) clock face.
- The face shows pairs of 7-segment 'LED' numeric displays for:
-  - hour
-  - minute and 
-  _ seconds values separated by a 'colon' character.
+/* This module creates a graphic display of a digital(numeric) clock face.
+   The face shows pairs of 7-segment 'LED' numeric displays for:
+   - hour
+   - minute and 
+   _ seconds values separated by a 'colon' character.
   
- The segments are drawn as a 4 x 7 matrix of dots 
- These dots immitate common 7-segment 'LED' numeric displays.
+  The segments are drawn as a 4 x 7 matrix of dots 
+  These dots immitate common 7-segment 'LED' numeric displays.
  
- The clock face is animated to 'explode' numbers as they change.
- Any dot that is not required to display the new value, is 
- animated with velocity away from its original position.
+  The clock face is animated to 'explode' numbers as they change.
+  Any dot that is not required to display the new value, is 
+  animated with velocity away from its original position.
  
- These animated 'free' dots will collide with each other,
- bounce off walls, and eventually fall out of view if they 
- roll off either end of the floor.
- */
+  These animated 'free' dots will collide with each other,
+  bounce off walls, and eventually fall out of view if they 
+  roll off either end of the floor. */
 
 /** trails represents the com-trail value */
 let _trails = '0.15'
 export const setTrails = (value: string) => _trails = value
 
 /** A two element array of instances of the ClockNumber component.
- *  Represents the graphic display of a 2 digit 'hours' number (using a leading zero) */
+    Represents the graphic display of a 2 digit 'hours' number (using a leading zero) */
 let hours: ClockNumber[]
 
 /** A two element array of instances of the ClockNumber component.
- * Represents the graphic display of a 2 digit 'minutes' number (using a leading zero) */
+    Represents the graphic display of a 2 digit 'minutes' number (using a leading zero) */
 let minutes: ClockNumber[]
 
 /**  A two element array of instances of the ClockNumber component.
@@ -95,11 +93,11 @@ export const buildClockFace = () => {
 }
 
 /** Main animation loop  ...
- * requestAnimationFrame returns a timestamp here.
- *
- * This function produces a 'particle' effect using
- * a transparent fill on the canvas.
- * We would expect ~ 60 frames per second here. */
+    requestAnimationFrame returns a timestamp here.
+  
+    This function produces a 'particle' effect using
+    a transparent fill on the canvas.
+    We would expect ~ 60 frames per second here. */
 export const tick = (timestamp: number) => {
 
     // First, we cover the existing canvas image with a
@@ -158,15 +156,15 @@ export const tick = (timestamp: number) => {
 
 
  /** Sets the static and active pixels for each of the two numeric displays    
-    SEE: ClockNumber.setPixels() */
+     SEE: ClockNumber.setPixels() */
  const setDigits = (digits: string, numbers: ClockNumber[]) => {
     numbers[0].drawPixels(PIXELS[parseInt(digits[0])])
     numbers[1].drawPixels(PIXELS[parseInt(digits[1])])
 }
 
-/** * This is where we create our empty numeric displays     
-      and two separating colons.    
-      Called only once by the constructor for initialization. */
+/** This is where we create our empty numeric displays     
+    and two separating colons.    
+    Called only once by the constructor for initialization. */
  const createNumbers = () => {
 
     // first, calculate the width of a numeric display

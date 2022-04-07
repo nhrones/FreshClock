@@ -1,5 +1,8 @@
 import { ctx, width, height } from './clock.ts'
 
+/** PISquared. Used in the rendering of arcs(circles).    
+ * We pre-calculate this value to prevent the cost of repeated calculation. */
+const PISquared = 2 * Math.PI
 
 /** A gravitational pull in the X direction    
  * (positive = right and negative = left)   
@@ -73,7 +76,7 @@ const Color = '#44f'
 export const renderDot = (x: number, y: number, color?: string) => {
     ctx.fillStyle = color || Color
     ctx.beginPath()
-    ctx.arc(x, y, HalfRadius, 0, 2 * Math.PI, true)
+    ctx.arc(x, y, HalfRadius, 0, PISquared, true)
     ctx.closePath()
     ctx.fill()
 }
@@ -100,14 +103,14 @@ let newDotBy = 0
 
 /*
   Rather than using a variable sized set of individual Dot objects,
-  we build several fixed size arrays that provide all required
-  attributes that represent a pool of dots.
+  we build several fixed-size arrays that provide all required
+  attributes that represent our pool of dots.
   
-  The main benefit, is the elimination of most garbage collection
+  The main benefit is the elimination of most garbage collection
   that building and destroying many dots at 60 frames per second
   would produce.
  
-  We simply activate or inactivate an index(dot), by setting the value    
+  We simply activate or inactivate an index by setting the value    
   of the posX array. A positive integer in the posX array indicates    
   'active', and a value of -1 indicates an inactive index.    
   Any index with an active posX value will be updated, tested for    
@@ -163,33 +166,29 @@ let tailPointer = 0
 /** The last 'tick' time (used for time-delta calculation). */
 let lastTime = Date.now()
 
-/**
- * Returns a random velocity value
- * clamped by the value of MaxVelocity
- */
+/** Returns a random velocity value
+    clamped by the value of MaxVelocity */
 const randomVelocity = () => {
     return (Math.random() - 0.4) * MaxVelocity
 }
 
-/**
- * Initializes all DotPool value arrays.
- */
+/** Initializes all DotPool value arrays. */
 export function initializeDotPool() {
     for (i = 0; i < POOL_SIZE; i++) {
         posX[i] = -1
         posY[i] = 0
         lastX[i] = -1
         lastY[i] = 0
-        velocityX[i] = randomVelocity()
-        velocityY[i] = randomVelocity()
+        velocityX[i] = 0
+        velocityY[i] = 0
     }
     lastTime = Date.now()
 }
 
 /** The main entry point for DotPool animations.
- * (called from the ClockFace animation loop 'ClockFace.tick()').
- * ClockFace.tick() is triggered by window.requestAnimationFrame().
- * We would expect ~ 60 frames per second here. */
+    (called from the ClockFace animation loop 'ClockFace.tick()').
+    ClockFace.tick() is triggered by window.requestAnimationFrame().
+    We would expect ~ 60 frames per second here. */
 export const tickDots = (thisTime: number) => {
     delta = ((thisTime - lastTime) / 1000.0)
     lastTime = thisTime
@@ -198,10 +197,10 @@ export const tickDots = (thisTime: number) => {
 }
 
 /** This function recalculates dot locations and velocities
- *  based on a time-delta (time-change since last update).
- * 
- * This function also mutates velocity/restitution whenever
- * a wall or floor collision is detected. */
+    based on a time-delta (time-change since last update).
+  
+   This function also mutates velocity/restitution whenever
+   a wall or floor collision is detected. */
 function updateDotPositions(delta: number) {
 
     // loop over all 'active' dots (all dots up to the tail pointer)
@@ -229,7 +228,7 @@ function updateDotPositions(delta: number) {
                 }
                 continue
 
-                // it was'nt on the floor so ... boune it off the wall
+                // it was'nt on the floor so ... bounce it off the wall
             } else {
                 if (posX[i] <= Radius) { posX[i] = Radius }
                 if (posX[i] >= (width)) { posX[i] = width }
@@ -258,8 +257,8 @@ function updateDotPositions(delta: number) {
 }
 
 /** This function tests for dots colliding with other dots.
- * When a collision is detected, we mutate the velocity values
- * of both of the colliding dots. */
+    When a collision is detected, we mutate the velocity values
+    of both of the colliding dots. */
 function testForCollisions(delta: number) {
 
     // loop over all active dots in the pool
@@ -298,7 +297,7 @@ function testForCollisions(delta: number) {
 }
 
 /** This function will calculate new velocity values
- * for both of the colliding dots. */
+    for both of the colliding dots. */
 function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: number) {
 
     thisDistanceSquared = distanceX ** 2 + distanceY ** 2
@@ -324,9 +323,9 @@ function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: n
 }
 
 /** Calculates a 'future' distance between two dots,
- * based on the last-known time-delta for the animations.
- * This is used to determin if the two dots are
- * moving toward, or away, from one another. */
+    based on the last-known time-delta for the animations.
+    This is used to determin if the two dots are
+    moving toward, or away, from one another. */
 function newDistanceSquared(delta: number, a: number, b: number) {
     newDotAx = posX[a] + (velocityX[a] * delta)
     newDotAy = posY[a] + (velocityY[a] * delta)
@@ -336,15 +335,15 @@ function newDistanceSquared(delta: number, a: number, b: number) {
 }
 
 /** Activates a dot-pool index, to create a new animated dot.
- * Whenever a time-number change causes one or more
- * dots to be 'freed' from the number display, we animated
- * them as if they exploded out of the number display.
- * We do this by activating the next available index,
- * setting its position to the position of the freed-dot,
- * and then assigning a random velocity to it.
- * If we have activated the array index pointed to by
- * tailPointer, we increment the tailPointer to maintain
- * our active pool size. */
+    Whenever a time-number change causes one or more
+    dots to be 'freed' from the number display, we animate
+    them as if they've exploded out of the number display.
+    We do this by activating the next available index,
+    setting its position to the position of the freed-dot,
+    and then assigning a random velocity to it.
+    If we have activated the array index pointed to by
+    tailPointer, we increment the tailPointer to maintain
+    our active pool size. */
 export function activateDot(x: number, y: number) {
     // loop though the pool to find an unused index
     // a value of '-1' for posX is used to indicate 'inactive'
@@ -368,14 +367,16 @@ export function activateDot(x: number, y: number) {
 
 
 /** This function renders a track of an animated(free)
- * dot in the dot pool.
- * 
- * Rather than static circles, we actually draw short lines
- * that represent the distance traveled since the last update.
- * These lines are drawn with round ends to better represent
- * a moving dot(circle). These short lines are automatically 
- * faded to black over time, to simulate a particle with a 'com-trail'.
- * SEE: ClockFace.tick() to understand this phenomenon. */
+    dot in the dot pool.
+  
+    Rather than static circles, we actually draw short lines
+    that represent the distance traveled since the last update.
+    These lines are drawn with round ends to better represent
+    a moving dot(circle).
+   
+    In order to simulate a particle with a 'com-trail', these 
+    short lines are automatically faded to black over time.
+    SEE: ClockFace.tick() to understand this phenomenon. */
 const renderFreeDot = (i: number) => {
     ctx.beginPath()
     ctx.fillStyle = Color

@@ -12,7 +12,7 @@ export let thisCanvas: HTMLCanvasElement
 export let width = 0
 export let height = 0
 
-
+/** We initialize our HTMLCanvasElement and its context2D */
 export const initClock = (aCanvas: HTMLCanvasElement) => {
     thisCanvas = aCanvas
     ctx = thisCanvas.getContext("2d") as CanvasRenderingContext2D

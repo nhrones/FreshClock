@@ -3,6 +3,7 @@ import { h, useEffect, useRef, IS_BROWSER } from "../client_deps.ts";
 import { initClock } from '../app/clock.ts'
 export type CanvasProps = { height: number, width: number };
 
+/** Our Preact Canvas component */
 export default function Canvas(props: CanvasProps) {
     
     const canvasElement = useRef(null);
