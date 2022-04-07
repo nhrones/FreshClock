@@ -62,11 +62,11 @@ const Color = '#44f'
 
 /**
  * Here we draw a dot(circle) on the screen (canvas).    
- * This method is used to create our 'static'    
+ * This function is used to create our 'static'    
  * time-value 'numbers' and 'colons' on the screen.
  * These are rendered as simple circles.    
  *     
- * A similar method, DotPool.renderFreeDot, is used to    
+ * A similar function, DotPool.renderFreeDot, is used to    
  * render animated dots using lines instead of circles.    
  * This will help emulate 'particle-com-trails'. (SEE: renderFreeDot below)
  */
@@ -98,44 +98,43 @@ let newDotAy = 0
 let newDotBx = 0
 let newDotBy = 0
 
-/**
- * Rather than using a variable sized set of individual Dot objects,
- * we build several fixed size arrays that provide all required
- * attributes that represent a pool of dots.
- * 
- * The main benefit, is the elimination of most garbage collection
- * that building and destroying many dots at 60 frames per second
- * would produce.
- *
- * We simply activate or inactivate an index(dot), by setting the value    
- * of the posX array. A positive integer in the posX array indicates    
- * 'active', and a value of -1 indicates an inactive index.    
- * Any index with an active posX value will be updated, tested for    
- * collisions, and rendered to the canvas.    
- *
- * New dot activations are always set at the lowest inactive posX-index.
- * We also maintain a 'tail pointer' to point to the highest active index.
- * This 'tail pointer' allows all 'loops' to only loop over elements presumed 
- * to be active.
- * These loops, from 0 to TailPointer, will also short circuit any index in
- * the loop that is inactive (has a posX value of -1).
- *
- * When a dot falls off the edge of the canvas, its posX is set inactive(-1).
- * If that dots index is equal to the tail-pointer value, we decrement
- * the TailPointer, effectively reducing the active pool size.
- *
- * Whenever a time-change(tick) causes the production of new 'animated' dots,
- * we simply find the first inactive index, and set it active by setting its
- * posX value to the x location of the 'time-dot' that is being set free.
- * If that first free-index is greater than the current tail, we set the tail-pointer
- * value to this new index, effectivly increasing the active pool size.
- *
- * This is a very efficient use of memory, and provides very efficient dot-animation
- * updates and collision-detection, as no new memory is required for each 'tick'.
- * This reduced presure on the garbage collector eliminates 'jank' that is common with
- * many forms of javascript animation where objects are created and destroyed per 'tick'.
+/*
+  Rather than using a variable sized set of individual Dot objects,
+  we build several fixed size arrays that provide all required
+  attributes that represent a pool of dots.
+  
+  The main benefit, is the elimination of most garbage collection
+  that building and destroying many dots at 60 frames per second
+  would produce.
+ 
+  We simply activate or inactivate an index(dot), by setting the value    
+  of the posX array. A positive integer in the posX array indicates    
+  'active', and a value of -1 indicates an inactive index.    
+  Any index with an active posX value will be updated, tested for    
+  collisions, and rendered to the canvas.    
+ 
+  New dot activations are always set at the lowest inactive posX-index.
+  We also maintain a 'tail pointer' to point to the highest active index.
+  This 'tail pointer' allows all 'loops' to only loop over elements presumed 
+  to be active.
+  These loops, from 0 to TailPointer, will also short circuit any index in
+  the loop that is inactive (has a posX value of -1).
+ 
+  When a dot falls off the edge of the canvas, its posX is set inactive(-1).
+  If that dots index is equal to the tail-pointer value, we decrement
+  the TailPointer, effectively reducing the active pool size.
+ 
+  Whenever a time-change(tick) causes the production of new 'animated' dots,
+  we simply find the first inactive index, and set it active by setting its
+  posX value to the x location of the 'time-dot' that is being set free.
+  If that first free-index is greater than the current tail, we set the tail-pointer
+  value to this new index, effectivly increasing the active pool size.
+ 
+  This is a very efficient use of memory, and provides very efficient dot-animation
+  updates and collision-detection, as no new memory is required for each 'tick'.
+  This reduced presure on the garbage collector eliminates 'jank' that is common with
+  many forms of javascript animation where objects are created and destroyed per 'tick'.
  */
-//export class DotPool {
 
 /** A 'fixed' maximum number of dots this pool will contain. */
 const POOL_SIZE = 500
@@ -187,12 +186,10 @@ export function initializeDotPool() {
     lastTime = Date.now()
 }
 
-/**
- * The main entry point for DotPool animations.
+/** The main entry point for DotPool animations.
  * (called from the ClockFace animation loop 'ClockFace.tick()').
  * ClockFace.tick() is triggered by window.requestAnimationFrame().
- * We would expect ~ 60 frames per second here.
- */
+ * We would expect ~ 60 frames per second here. */
 export const tickDots = (thisTime: number) => {
     delta = ((thisTime - lastTime) / 1000.0)
     lastTime = thisTime
@@ -200,13 +197,11 @@ export const tickDots = (thisTime: number) => {
     testForCollisions(delta)
 }
 
-/**
- * This method recalculates dot locations and velocities
- * based on a time-delta (time-change since last update).
+/** This function recalculates dot locations and velocities
+ *  based on a time-delta (time-change since last update).
  * 
- * This method also mutates velocity/restitution whenever
- * a wall or floor collision is detected.
- */
+ * This function also mutates velocity/restitution whenever
+ * a wall or floor collision is detected. */
 function updateDotPositions(delta: number) {
 
     // loop over all 'active' dots (all dots up to the tail pointer)
@@ -262,11 +257,9 @@ function updateDotPositions(delta: number) {
     }
 }
 
-/**
- * This method tests for dots colliding with other dots.
+/** This function tests for dots colliding with other dots.
  * When a collision is detected, we mutate the velocity values
- * of both of the colliding dots.
- */
+ * of both of the colliding dots. */
 function testForCollisions(delta: number) {
 
     // loop over all active dots in the pool
@@ -304,10 +297,8 @@ function testForCollisions(delta: number) {
     }
 }
 
-/**
- * This method will calculate new velocity values
- * for both of the colliding dots.
- */
+/** This function will calculate new velocity values
+ * for both of the colliding dots. */
 function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: number) {
 
     thisDistanceSquared = distanceX ** 2 + distanceY ** 2
@@ -332,12 +323,10 @@ function collideDots(dotA: number, dotB: number, distanceX: number, distanceY: n
     velocityY[dotB] += ratioY * impactSpeed
 }
 
-/**
- * Calculates a 'future' distance between two dots,
+/** Calculates a 'future' distance between two dots,
  * based on the last-known time-delta for the animations.
  * This is used to determin if the two dots are
- * moving toward, or away, from one another.
- */
+ * moving toward, or away, from one another. */
 function newDistanceSquared(delta: number, a: number, b: number) {
     newDotAx = posX[a] + (velocityX[a] * delta)
     newDotAy = posY[a] + (velocityY[a] * delta)
@@ -346,8 +335,7 @@ function newDistanceSquared(delta: number, a: number, b: number) {
     return (Math.abs(newDotAx - newDotBx) ** 2) + (Math.abs(newDotAy - newDotBy) ** 2)
 }
 
-/**
- * Activates a dot-pool index, to create a new animated dot.
+/** Activates a dot-pool index, to create a new animated dot.
  * Whenever a time-number change causes one or more
  * dots to be 'freed' from the number display, we animated
  * them as if they exploded out of the number display.
@@ -356,8 +344,7 @@ function newDistanceSquared(delta: number, a: number, b: number) {
  * and then assigning a random velocity to it.
  * If we have activated the array index pointed to by
  * tailPointer, we increment the tailPointer to maintain
- * our active pool size.
- */
+ * our active pool size. */
 export function activateDot(x: number, y: number) {
     // loop though the pool to find an unused index
     // a value of '-1' for posX is used to indicate 'inactive'
@@ -380,8 +367,7 @@ export function activateDot(x: number, y: number) {
 }
 
 
-/**
- * This method renders a track of an animated(free)
+/** This function renders a track of an animated(free)
  * dot in the dot pool.
  * 
  * Rather than static circles, we actually draw short lines
@@ -389,8 +375,7 @@ export function activateDot(x: number, y: number) {
  * These lines are drawn with round ends to better represent
  * a moving dot(circle). These short lines are automatically 
  * faded to black over time, to simulate a particle with a 'com-trail'.
- * SEE: ClockFace.tick() to understand this phenomenon.
- */
+ * SEE: ClockFace.tick() to understand this phenomenon. */
 const renderFreeDot = (i: number) => {
     ctx.beginPath()
     ctx.fillStyle = Color

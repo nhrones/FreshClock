@@ -50,15 +50,15 @@ let currentY = 0
 let _trails = '0.15'
 export const setTrails = (value: string) => _trails = value
 
-/** A two element array of instances of the ClockNumber class.
- * Represents the graphic display of a 2 digit 'hours' number (using a leading zero) */
+/** A two element array of instances of the ClockNumber component.
+ *  Represents the graphic display of a 2 digit 'hours' number (using a leading zero) */
 let hours: ClockNumber[]
 
-/** A two element array of instances of the ClockNumber class.
+/** A two element array of instances of the ClockNumber component.
  * Represents the graphic display of a 2 digit 'minutes' number (using a leading zero) */
 let minutes: ClockNumber[]
 
-/**  A two element array of instances of the ClockNumber class.
+/**  A two element array of instances of the ClockNumber component.
      Represents the graphic display of a 2 digit 'seconds' number (using a leading zero) */
 let seconds: ClockNumber[]
 
@@ -89,7 +89,7 @@ export const buildClockFace = () => {
     // draw number placeholders and colons onto the canvas
     createNumbers()
 
-    // start the animation loop (tick method call)
+    // start the animation loop (tick function)
     self.requestAnimationFrame(tick)
     console.log('tick')
 }
@@ -97,7 +97,7 @@ export const buildClockFace = () => {
 /** Main animation loop  ...
  * requestAnimationFrame returns a timestamp here.
  *
- * This method produces a 'particle' effect using
+ * This function produces a 'particle' effect using
  * a transparent fill on the canvas.
  * We would expect ~ 60 frames per second here. */
 export const tick = (timestamp: number) => {

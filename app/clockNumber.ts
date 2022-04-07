@@ -2,7 +2,7 @@ import { renderDot, activateDot } from './dotPool.ts'
 import { DOT_WIDTH, DOT_HEIGHT } from './clockFace.ts'
 
 /**
- * This class creates an array of physical locations
+ * This module creates an array of physical locations
  * that will be used as a 4 x 7 dot matrix.
  * This array will be manipulted to represent a
  * seven segment numeric display.
