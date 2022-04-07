@@ -19,12 +19,7 @@ let hSize = 0
 let vSize = 0
 let i
 
-/** A pool of 'freed' animated dots    
- *  These are the dots that are ejected    
- *  from the static numeric displays when    
- *  the time values change
- */
-//let animatedDots: unknown
+
 
 /** The current horizontal location to render to */
 let currentX = 0
@@ -32,44 +27,38 @@ let currentX = 0
 /** the current vertical location to render to */
 let currentY = 0
 
-/**
- * This class creates a graphic display of a digital(numeric)
- * clock face.
- * The face shows pairs of two, 7-segment 'LED' numeric displays for;
- * hour, minute, and seconds values, each separated by a 'colon' character.
- * The segments are drawn as 4 x 7 matrix of dots(circles) that immitate
- * common 7-segment 'LED' numeric displays.
- *
- * This clock face is animated to 'explode' numbers as they change.
- * Any segment(dot) that is active when a number value changes, and is not
- * required to display the new value, is animated with velocity away
- * from its original spot in the number.
- * These 'free' dots become animated, will collide with each other,
- * bounce off walls, and eventually fall out of view if they roll on
- * the floor off either end.
+/*
+ This class creates a graphic display of a digital(numeric)
+ clock face.
+ The face shows pairs of two, 7-segment 'LED' numeric displays for;
+ hour, minute, and seconds values, each separated by a 'colon' character.
+ The segments are drawn as 4 x 7 matrix of dots(circles) that immitate
+ common 7-segment 'LED' numeric displays.
+ 
+ This clock face is animated to 'explode' numbers as they change.
+ Any segment(dot) that is active when a number value changes, and is not
+ required to display the new value, is animated with velocity away
+ from its original spot in the number.
+ 
+ These 'free' dots become animated, will collide with each other,
+ bounce off walls, and eventually fall out of view if they roll on
+ the floor off either end.
  */
-//export class ClockFace {
 
 /** trails represents the com-trail value */
 let _trails = '0.15'
 export const setTrails = (value: string) => _trails = value
 
-/**
- * A two element array of instances of the ClockNumber class.
- * Represents the graphic display of a 2 digit 'hours' number (using a leading zero)
- */
+/** A two element array of instances of the ClockNumber class.
+ * Represents the graphic display of a 2 digit 'hours' number (using a leading zero) */
 let hours: ClockNumber[]
 
-/**
- * A two element array of instances of the ClockNumber class.
- * Represents the graphic display of a 2 digit 'minutes' number (using a leading zero)
- */
+/** A two element array of instances of the ClockNumber class.
+ * Represents the graphic display of a 2 digit 'minutes' number (using a leading zero) */
 let minutes: ClockNumber[]
 
-/**
- * A two element array of instances of the ClockNumber class.
- * Represents the graphic display of a 2 digit 'seconds' number (using a leading zero)
- */
+/**  A two element array of instances of the ClockNumber class.
+     Represents the graphic display of a 2 digit 'seconds' number (using a leading zero) */
 let seconds: ClockNumber[]
 
 /** colon locations */
@@ -88,7 +77,6 @@ export const buildClockFace = () => {
     // initialize the dot-pool that will contain
     // and animate dots that are 'freed' from this
     // clock-face.
-    //animatedDots = initializeDotPool()
     initializeDotPool()
     
     console.log('fill the background image all solid black')
@@ -105,14 +93,12 @@ export const buildClockFace = () => {
     console.log('tick')
 }
 
-/**
- * Main animation loop  ...
+/** Main animation loop  ...
  * requestAnimationFrame returns a timestamp here.
  *
  * This method produces a 'particle' effect using
  * a transparent fill on the canvas.
- * We would expect ~ 60 frames per second here.
- */
+ * We would expect ~ 60 frames per second here. */
 export const tick = (timestamp: number) => {
 
     // First, we cover the existing canvas image with a
@@ -156,10 +142,7 @@ export const tick = (timestamp: number) => {
 }
 
 
-/**
- * Display the current time.
- * Called on each 'tick'
- */
+/** Display the current time. Called on each 'tick' */
  const updateTime = (now: Date) => {
 
     // set the current hours display
@@ -173,21 +156,16 @@ export const tick = (timestamp: number) => {
 }
 
 
-/**
- * Sets the static and active pixels for each of the two numeric displays    
- * SEE: ClockNumber.setPixels()
- */
+ /** Sets the static and active pixels for each of the two numeric displays    
+    SEE: ClockNumber.setPixels() */
  const setDigits = (digits: string, numbers: ClockNumber[]) => {
     numbers[0].drawPixels(PIXELS[parseInt(digits[0])])
     numbers[1].drawPixels(PIXELS[parseInt(digits[1])])
 }
 
-/**
- * This is where we create our empty numeric displays
- * and their two separating colons.
- *
- * Called only once by the constructor for initialization.
- */
+/** * This is where we create our empty numeric displays     
+      and two separating colons.    
+      Called only once by the constructor for initialization. */
  const createNumbers = () => {
 
     // first, calculate the width of a numeric display
@@ -228,9 +206,7 @@ export const tick = (timestamp: number) => {
     buildNumber(seconds)
 }
 
-/**
- * Initialize the positions of the ClockNumber objects,
- */
+/** Initialize the positions of the ClockNumber objects */
 const buildNumber = (digits: ClockNumber[]) => {
     for (i = 0; i < 2; ++i) {
         digits[i] = createNumber(currentX, currentY)
@@ -239,10 +215,8 @@ const buildNumber = (digits: ClockNumber[]) => {
 }
 
 
-/**
- * Convert a number to a string and add a
- * leading zero to any number less than 10.
- */
+/** Convert a number to a string and add a
+    leading zero to any number less than 10. */
 const pad2 = (num: number) => {
     return (num < 10) ? "0" + num.toString() : num.toString()
 }
