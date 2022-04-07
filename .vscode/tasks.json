@@ -1,0 +1,87 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Fresh Manifest Update",
+            "type": "shell",
+            "command": "fresh",
+            "options": {
+                "cwd": "./"
+            },
+            "args": [
+                "manifest"
+            ],
+            "windows": {
+                "options": {
+                    "cwd": "./"
+                },
+                "command": "fresh",
+                "args": [
+                    "manifest"
+                ]
+            },
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "clear": false,
+                "showReuseMessage": true
+            },
+            "problemMatcher": [
+                "$deno"
+            ]
+        },
+        {
+            "label": "Deno Run Fresh",
+            "type": "shell",
+            "command": "deno",
+            "options": {
+                "cwd": "./",
+                "env": {
+                    "DEBUG": "false",
+                    "DENO_REGION": "localhost"
+                }
+            },
+            "args": [
+                "run",
+                "--watch=static/",
+                "--allow-run",
+                "--no-check",
+                "--allow-env",
+                "--allow-read",
+                "--allow-net",
+                "${workspaceFolder}/main.ts"
+            ],
+            "windows": {
+                "options": {
+                    "cwd": "./"
+                },
+                "command": "deno",
+                "args": [
+                    "run",
+                    "--watch=static/",
+                    "--allow-run",
+                    "--no-check",
+                    "--allow-env",
+                    "--allow-read",
+                    "--allow-net",
+                    "${workspaceFolder}\\main.ts"
+                ]
+            },
+            "group": "none",
+            "presentation": {
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "clear": true,
+                "showReuseMessage": false
+            },
+            "problemMatcher": [
+                "$deno"
+            ]
+        }
+    ]
+}
