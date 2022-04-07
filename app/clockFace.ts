@@ -28,7 +28,7 @@ let currentX = 0
 let currentY = 0
 
 /*
- This class creates a graphic display of a digital(numeric)
+ This module creates a graphic display of a digital(numeric)
  clock face.
  The face shows pairs of two, 7-segment 'LED' numeric displays for;
  hour, minute, and seconds values, each separated by a 'colon' character.
