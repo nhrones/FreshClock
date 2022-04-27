@@ -5,7 +5,7 @@ export type CanvasProps = { height: number, width: number };
 
 /** Our Preact Canvas component */
 export default function Canvas(props: CanvasProps) {
-    
+      
     const canvasElement = useRef(null);
     
     useEffect(() => {
