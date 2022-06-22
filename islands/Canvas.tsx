@@ -1,5 +1,7 @@
 /** @jsx h */
-import { h, useEffect, useRef, IS_BROWSER } from "../client_deps.ts";
+import { h}  from 'preact';
+import { useEffect, useRef } from 'preact/hooks'
+import { IS_BROWSER } from '$fresh/runtime.ts';
 import { initClock } from '../app/clock.ts'
 export type CanvasProps = { height: number, width: number };
 

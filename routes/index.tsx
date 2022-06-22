@@ -1,7 +1,8 @@
 /** @jsx h */
 /** @jsxFrag Fragment */
 
-import { Fragment, h, Head } from "../client_deps.ts";
+import { Fragment, h } from "preact";
+import { Head } from '$fresh/runtime.ts'
 import Canvas from "../islands/Canvas.tsx";
 
 export default function Home() {
